@@ -16,7 +16,6 @@
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="8"/>
             <Setter Property="FontSize" Value="14"/>
-
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
@@ -25,23 +24,18 @@
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}">
-
                             <ScrollViewer x:Name="PART_ContentHost"/>
                         </Border>
-
                         <ControlTemplate.Triggers>
-
                             <!-- Focus effect -->
                             <Trigger Property="IsFocused" Value="True">
                                 <Setter TargetName="border" Property="BorderBrush" Value="#2E7D32"/>
                                 <Setter TargetName="border" Property="BorderThickness" Value="2"/>
                             </Trigger>
-
                             <!-- Disabled -->
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter TargetName="border" Property="Opacity" Value="0.6"/>
                             </Trigger>
-
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
