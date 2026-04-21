@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Config>
+	<ApiEndPoint>https://dev-api.opsole.com</ApiEndPoint>
+	<BearerToken>Bearer eyJvcmdhbml6YXRpb25JZCI6IjA1ZGZmZDI1LTA3YjYtNDY0Yi1hMjk5LTdiZjVkYTI0Y2M4NiIsImV4cGlyZWRBdCI6IjIwMjYtMDctMTZUMTg6MDI6MTEuOTI0KzAwOjAwIiwiaXNzdWVkQXQiOiIyMDI2LTA0LTE3VDE4OjAyOjExLjkyNSswMDowMCIsInN0YXR1cyI6ImFjdGl2ZSJ9</BearerToken>
+	<AESKey>nG+k7v0CMip2nsiZpDpwIZjIvqOKRsXJfwC0zpKPnCc=</AESKey>
+</Config>
