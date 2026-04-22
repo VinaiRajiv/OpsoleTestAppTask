@@ -89,30 +89,80 @@ namespace OpsoleTestApp.Services
                     var dirInfo = new DirectoryInfo(basePath);
                     var security = dirInfo.GetAccessControl();
 
-                    security.AddAccessRule(new FileSystemAccessRule(
+                    // Apply ACL
+                    var rule = new FileSystemAccessRule(
                         "Everyone",
                         FileSystemRights.FullControl,
                         InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
                         PropagationFlags.None,
-                        AccessControlType.Allow));
+                        AccessControlType.Allow);
 
+                    security.AddAccessRule(rule);
                     dirInfo.SetAccessControl(security);
+
+                    // Verify ACL
+                    var rules = dirInfo.GetAccessControl()
+                        .GetAccessRules(true, true, typeof(System.Security.Principal.NTAccount));
+
+                    bool exists = false;
+
+                    foreach (FileSystemAccessRule r in rules)
+                    {
+                        if (r.IdentityReference.Value == "Everyone" &&
+                            r.FileSystemRights.HasFlag(FileSystemRights.FullControl))
+                        {
+                            exists = true;
+                            break;
+                        }
+                    }
+
+                    if (!exists)
+                    {
+                        SystemUtility.LogToFile("Registry ACL verification failed");
+                        throw new Exception("ACL verification failed");
+                    }
+
                     return "File ACL: OK";
                 });
 
                 await Run("Registry ACL", () =>
                 {
                     var key = Registry.LocalMachine.CreateSubKey(@"SOFTWARE\OpsoleTest\UserProfile\AppSettings");
+
                     var security = key.GetAccessControl();
 
-                    security.AddAccessRule(new RegistryAccessRule(
+                    var rule = new RegistryAccessRule(
                         "Everyone",
                         RegistryRights.FullControl,
                         InheritanceFlags.ContainerInherit,
                         PropagationFlags.None,
-                        AccessControlType.Allow));
+                        AccessControlType.Allow);
 
+                    security.AddAccessRule(rule);
                     key.SetAccessControl(security);
+
+                    // Verify ACL
+                    var rules = key.GetAccessControl()
+                        .GetAccessRules(true, true, typeof(System.Security.Principal.NTAccount));
+
+                    bool exists = false;
+
+                    foreach (RegistryAccessRule r in rules)
+                    {
+                        if (r.IdentityReference.Value == "Everyone" &&
+                            r.RegistryRights.HasFlag(RegistryRights.FullControl))
+                        {
+                            exists = true;
+                            break;
+                        }
+                    }
+
+                    if (!exists)
+                    {
+                        SystemUtility.LogToFile("Registry ACL verification failed");
+                        throw new Exception("Registry ACL verification failed");
+                    }
+
                     return "Registry ACL: OK";
                 });
 
