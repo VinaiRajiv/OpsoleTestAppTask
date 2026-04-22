@@ -11,15 +11,17 @@ namespace OpsoleTestApp.Services
         /// 
         /// </summary>
         private readonly HttpClient client = new HttpClient();
-        private readonly AppConfig config;
+        private readonly string endPoint;
+        private readonly string token;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="config"></param>
-        public APIService(AppConfig appConfig)
+        public APIService(string apiEndPoint, string bearerToken)
         {
-            config = appConfig;
+            endPoint = apiEndPoint;
+            token = bearerToken;
         }
 
         /// <summary>
@@ -49,8 +51,8 @@ namespace OpsoleTestApp.Services
                 {
                     try
                     {
-                        var req = new HttpRequestMessage(HttpMethod.Post, config.ApiEndPoint + "/client/logs");
-                        req.Headers.Add("Authorization", config.BearerToken);
+                        var req = new HttpRequestMessage(HttpMethod.Post, endPoint + "/client/logs");
+                        req.Headers.Add("Authorization", token);
                         req.Content = new StringContent(json, Encoding.UTF8, "application/json");
 
                         var res = await client.SendAsync(req);

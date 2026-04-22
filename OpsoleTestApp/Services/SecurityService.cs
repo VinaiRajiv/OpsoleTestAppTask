@@ -89,5 +89,29 @@ namespace OpsoleTestApp.Services
                 SystemUtility.LogToFile($"Exception occurred, Message: {ex.Message}");
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public string ReadFromRegistry()
+        {
+            try
+            {
+                using var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\OpsoleTest\ApiConfig");
+
+                if (key == null)
+                {
+                    SystemUtility.LogToFile("The key read from registry is null");
+                    return string.Empty;
+                }
+                return key.GetValue("Data").ToString();
+            }
+            catch (Exception ex)
+            {
+                SystemUtility.LogToFile($"Exception occurred, Message: {ex.Message}");
+                return string.Empty;
+            }
+        }
     }
 }

@@ -32,13 +32,17 @@ namespace OpsoleTestApp.Services
                 SystemUtility.LogToFile($"The configuration file loading failed");
                 throw new InvalidOperationException("Configuration is Invalid");
             }
-
             secService = new SecurityService(config.AESKey);
-            apiService = new APIService(config);
 
             // Encrypt config and store
             string raw = config.ApiEndPoint + "|" + config.BearerToken;
             secService.SaveToRegistry(secService.Encrypt(raw));
+
+            string value = secService.ReadFromRegistry();
+            string decryptedValue = secService.Decrypt(value);
+            var splittedValues = decryptedValue.Split('|');
+
+            apiService = new APIService(splittedValues[0], splittedValues[1]);
         }
 
         /// <summary>
